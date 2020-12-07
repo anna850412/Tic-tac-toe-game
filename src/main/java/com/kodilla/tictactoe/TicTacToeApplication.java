@@ -58,9 +58,9 @@ public class TicTacToeApplication extends Application {
                 createAnimationLineForWinner(tile);
                 break;
             }
-       }
+       }}
 
-    }
+
 
     public void createAnimationLineForWinner(Tile tile){
     Line line = new Line();
@@ -77,6 +77,13 @@ public class TicTacToeApplication extends Application {
         timeline.play();
     }
 
+    public boolean isKeepPlaying() {
+        return keepPlaying;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
 
     public static void main(String[] args) {
         launch(args);

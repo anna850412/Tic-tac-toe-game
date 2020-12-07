@@ -27,12 +27,17 @@ public class Tile extends StackPane {
         text.setFont(Font.font(100));
         setOnMouseClicked(event -> {
             System.out.println("Kliknieto");
-
+//application.verifyResult();
+            if(!application.isKeepPlaying())
+                return;
             if (isLastX) {
-                text.setText("O");
 
+                text.setText("O");
+                application.verifyResult();
             } else {
-                text.setText("X");
+              //  drawX();
+             text.setText("X");
+                application.verifyResult();
             }
             isLastX = !isLastX;
         });
