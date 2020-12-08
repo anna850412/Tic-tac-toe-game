@@ -5,25 +5,28 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class TicTacToeApplication extends Application {
+
     private Tile [][] board = new Tile[3][3];
     private List<Tile> tiles = new LinkedList<>();
-    private boolean keepPlaying = true;
-    private boolean isComplete = true;
+    private boolean keepPlaying;
+    private boolean isComplete;
+
     GridPane root = new GridPane();
 
-    private Parent createContent() {
+    private GridPane createContent() {
         GridPane root = new GridPane();
         root.setPrefSize(600, 600);
         root.setAlignment(Pos.CENTER);
@@ -35,8 +38,10 @@ public class TicTacToeApplication extends Application {
                 root.add(tile, j, i);
                 tiles.add(tile);
                 board[j][i] = tile;
+
             }
         }
+
         //horizontal
         for (int y = 0; y < 3; y++){
             tiles.add(new Tile(board[0][y], board[1][y], board[2][y]));
@@ -77,13 +82,19 @@ public class TicTacToeApplication extends Application {
         timeline.play();
     }
 
-    public boolean isKeepPlaying() {
-        return keepPlaying;
-    }
+ public void endOfGame(){
+     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+     alert.setTitle("End of Game");
+     alert.setHeaderText("Thank you for playing Tic Tac Toe");
+     alert.setContentText("Would you like to play new Game?");
 
-    public boolean isComplete() {
-        return isComplete;
-    }
+     Optional<ButtonType> result = alert.showAndWait();
+     if (result.get() == ButtonType.OK){
+         createContent();
+     } else {
+         keepPlaying = false;
+     }
+ }
 
     public static void main(String[] args) {
         launch(args);

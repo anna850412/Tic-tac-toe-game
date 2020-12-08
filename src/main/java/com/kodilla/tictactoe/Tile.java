@@ -9,8 +9,8 @@ import javafx.scene.text.Text;
 
 public class Tile extends StackPane {
     private static boolean isLastX = true;
+    private static boolean keepPlaying;
     Text text = new Text();
-    TicTacToeApplication application = new TicTacToeApplication();
 
     private Tile[] tiles;
 
@@ -23,21 +23,19 @@ public class Tile extends StackPane {
         Rectangle border = new Rectangle(200, 200);
         border.setFill(null);
         border.setStroke(Color.BLACK);
-        Text text = new Text();
+        // Text text = new Text();
         text.setFont(Font.font(100));
         setOnMouseClicked(event -> {
             System.out.println("Kliknieto");
-//application.verifyResult();
-            if(!application.isKeepPlaying())
-                return;
-            if (isLastX) {
 
-                text.setText("O");
-                application.verifyResult();
+            if (isLastX) {
+                drawO();
+                //    text.setText("O");
+                verifyResult();
             } else {
-              //  drawX();
-             text.setText("X");
-                application.verifyResult();
+                drawX();
+                //  text.setText("X");
+                this.verifyResult();
             }
             isLastX = !isLastX;
         });
@@ -45,12 +43,24 @@ public class Tile extends StackPane {
         getChildren().addAll(border, text);
     }
 
+    public void verifyResult() {
+        for (Tile tile : tiles) {
+            if (tile.isComplete()) {
+                keepPlaying = false;
+                //createAnimationLineForWinner(tile);
+                break;
+            }
+        }
+    }
+
     public void drawX() {
         text.setText("X");
+        text.setFont(Font.font(100));
     }
 
     public void drawO() {
         text.setText("O");
+        text.setFont(Font.font(100));
     }
 
     public String getValue() {
