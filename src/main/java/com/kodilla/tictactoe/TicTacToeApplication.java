@@ -5,6 +5,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -24,9 +25,10 @@ public class TicTacToeApplication extends Application {
     private boolean keepPlaying;
     private boolean isComplete;
 
+
     GridPane root = new GridPane();
 
-    private GridPane createContent() {
+    private Parent createContent() {
         GridPane root = new GridPane();
         root.setPrefSize(600, 600);
         root.setAlignment(Pos.CENTER);
@@ -42,6 +44,25 @@ public class TicTacToeApplication extends Application {
             }
         }
 
+//        Button button1 = new Button("Button 1");
+//        Button button2 = new Button("Button 2");
+//        Button button3 = new Button("Button 3");
+//        Button button4 = new Button("Button 4");
+//        Button button5 = new Button("Button 5");
+//        Button button6 = new Button("Button 6");
+//        Button button7 = new Button("Button 7");
+//        Button button8 = new Button("Button 8");
+//        Button button9 = new Button("Button 9");
+//
+//        root.add(button1, 0, 0, 1, 1);
+//        root.add(button2, 1, 0, 1, 1);
+//        root.add(button3, 2, 0, 1, 1);
+//        root.add(button4, 0, 1, 1, 1);
+//        root.add(button5, 1, 1, 1, 1);
+//        root.add(button6, 2, 1, 1, 1);
+//        root.add(button7, 0, 2, 1, 1);
+//        root.add(button8, 1, 2, 1, 1);
+//        root.add(button9, 2, 2, 1, 1);
         //horizontal
         for (int y = 0; y < 3; y++){
             tiles.add(new Tile(board[0][y], board[1][y], board[2][y]));
