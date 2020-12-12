@@ -1,6 +1,9 @@
 package com.kodilla.tictactoe;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -8,80 +11,26 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class Tile extends StackPane {
-    private static boolean isLastX = true;
-    private boolean keepPlaying;
+    int idNumber;
     Text text = new Text();
-    private Tile[][] board = new Tile[3][3];
-    private Tile[] tiles;
 
-    public Tile [] getTiles() {
-        return this.tiles;
-    }
-
-    public Tile(Tile... tiles) {
-        this.tiles = tiles;
+    public Tile(GameController controller) {
         Rectangle border = new Rectangle(200, 200);
         border.setFill(null);
         border.setStroke(Color.BLACK);
-        // Text text = new Text();
-        text.setFont(Font.font(100));
-        setOnMouseClicked(event -> {
-            System.out.println("Kliknieto");
-
-            if (isLastX) {
-                drawO();
-                //    text.setText("O");
-                verifyResult();
-            } else {
-                drawX();
-                //  text.setText("X");
-                this.verifyResult();
-            }
-            isLastX = !isLastX;
-        });
         setAlignment(Pos.CENTER);
         getChildren().addAll(border, text);
-    }
+        text.setFont(Font.font(25));
 
-    public void verifyResult() {
-        for (Tile tile : tiles) {
-            if (tile.isComplete()) {
-                keepPlaying = false;
-                //createAnimationLineForWinner(tile);
-                break;
-            }
-        }
-    }
-
-    public void drawX() {
-        text.setText("X");
-        text.setFont(Font.font(100));
-    }
-
-    public void drawO() {
-        text.setText("O");
-        text.setFont(Font.font(100));
-    }
-
-    public String getValue() {
-        return text.getText();
-    }
-
-    public double getCenterX() {
-        return getTranslateX() + 100;
-    }
-
-    public double getCenterY() {
-        return getTranslateY() + 100;
-    }
-
-    public boolean isComplete() {
+        setOnMouseClicked(event ->
         {
-//            if (tiles[0].getValue().setText(String.valueOf(tiles))) {
-//                return false;
-//            }
-        }
-        return tiles[0].getValue().equals(tiles[1].getValue()) &&
-                tiles[0].getValue().equals(tiles[2].getValue());
+            Tile source = (Tile) event.getSource();
+
+            controller.runAGame(source);
+
+
+        });
+
     }
+
 }
