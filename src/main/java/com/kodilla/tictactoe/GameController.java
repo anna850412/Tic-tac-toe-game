@@ -1,13 +1,13 @@
 package com.kodilla.tictactoe;
 
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameController {
     GridPane root;
@@ -16,7 +16,7 @@ public class GameController {
     Set<Integer> markedTilesO = new HashSet<>();
     List<HashSet<Integer>> winningCombinations = new ArrayList<>();
 
-    public GameController(GridPane root) {
+    public GameController(GridPane root, Stage stage) {
         this.root = root;
         HashSet<Integer> hashSet = new HashSet();
         hashSet.add(1);
@@ -38,66 +38,78 @@ public class GameController {
         hashSet3.add(4);
         hashSet3.add(7);
         winningCombinations.add(hashSet3);
-        //       HashSet<Integer> hashSet4 = new HashSet();
-//        hashSet4.add(2);
-//        hashSet.add(5);
-//        hashSet.add(8);
-//        winningCombinations[4] = hashSet;
-//        hashSet.add(3);
-//        hashSet.add(6);
-//        hashSet.add(9);
-//        winningCombinations[5] = hashSet;
-//        hashSet.add(3);
-//        hashSet.add(5);
-//        hashSet.add(7);
-//        winningCombinations[6] = hashSet;
-//        hashSet.add(1);
-//        hashSet.add(5);
-//        hashSet.add(9);
-//        winningCombinations[7] = hashSet;
+        HashSet<Integer> hashSet4 = new HashSet();
+        hashSet4.add(2);
+        hashSet4.add(5);
+        hashSet4.add(8);
+        winningCombinations.add(hashSet4);
+        HashSet<Integer> hashSet5 = new HashSet();
+        hashSet5.add(3);
+        hashSet5.add(6);
+        hashSet5.add(9);
+        winningCombinations.add(hashSet5);
+        HashSet<Integer> hashSet6 = new HashSet();
+        hashSet6.add(3);
+        hashSet6.add(5);
+        hashSet6.add(7);
+        winningCombinations.add(hashSet6);
+        HashSet<Integer> hashSet7 = new HashSet();
+        hashSet7.add(1);
+        hashSet7.add(5);
+        hashSet7.add(9);
+        winningCombinations.add(hashSet7);
+    }
+    Text text = new Text();
 
-
+    public void makeComputerMove() {
+        List<Tile> tiles = root.getChildren().stream()
+                .filter(node -> node instanceof Tile)
+                .map(node -> ((Tile) node))
+                .filter(newTile -> newTile.text.getText().equals(""))
+                .collect(Collectors.toList());
+        Random randomGenerator = new Random();
+        int computerTileIndex = randomGenerator.nextInt(tiles.size()) + 1;
+        tiles.get(computerTileIndex).text.setText("O");
+        Tile computerTile = tiles.set(computerTileIndex, tiles.get(computerTileIndex));
     }
 
     public boolean ifFieldWasUsedBefore(Tile tile) {
-
         boolean result = markedTilesO.contains(tile.idNumber) || markedTilesX.contains(tile.idNumber);
         return result;
     }
 
-    public void runAGame(Tile tile) {
+    public void runAGame(Tile tile, Stage stage) {
         if (!ifFieldWasUsedBefore(tile)) {
             if (isLastX) {
-                tile.text.setText("O");
+                System.out.println("this last x is false");
                 markedTilesO.add(tile.idNumber);
-                verifyResult(markedTilesO);
+                verifyResult(markedTilesO, stage);
                 isLastX = false;
             } else {
+                System.out.println("this last x is true");
                 tile.text.setText("X");
                 markedTilesX.add(tile.idNumber);
-                verifyResult(markedTilesX);
+                verifyResult(markedTilesX, stage);
                 isLastX = true;
             }
-
         }
     }
 
-    public void verifyResult(Set<Integer> hashSet) {
+    public void verifyResult(Set<Integer> hashSet, Stage stage) {
         if (winningCombinations.contains(hashSet)) {
-            endOfGame();
+            endOfGame(stage);
         }
-
     }
 
-    public void endOfGame() {
+    public void endOfGame(Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("End of Game");
         String message;
         alert.setHeaderText("Thank you for playing Tic Tac Toe");
         if (!isLastX) {
-            message = "Wygrał X, Czy checsz nowa gre?";
+            message = "Won X, Would you like to play new game?";
         } else {
-            message = "Wuygfrał O chcesz jeszcze raz?";
+            message = "Won O, Would you like to play new game?";
         }
         alert.setContentText(message);
 
@@ -110,8 +122,9 @@ public class GameController {
                 ((Tile) root.getChildren().get(i)).text.setText("");
             }
         } else {
-
+            stage.close();
         }
+
     }
 }
 
